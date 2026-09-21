@@ -8,15 +8,15 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// API Endpoint for Wafir AI Chat
+// API Endpoint for Wafir AI Chat and Multimodal Features
 app.post('/api/chat', async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const { prompt, mode } = req.body;
     if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
       return res.status(400).json({ error: 'Prompt is required.' });
     }
 
-    const responses = await generateMultiAiResponses(prompt.trim());
+    const responses = await generateMultiAiResponses(prompt.trim(), mode || 'chat');
     return res.json(responses);
   } catch (error) {
     console.error('Error generating Wafir AI responses:', error);
@@ -24,9 +24,8 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', name: 'Wafir AI Engine', version: '1.0.0' });
+  res.json({ status: 'ok', name: 'Wafir AI Engine Suite', version: '2.0.0' });
 });
 
 if (process.env.NODE_ENV !== 'test') {
