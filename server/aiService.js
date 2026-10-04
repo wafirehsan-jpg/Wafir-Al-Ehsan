@@ -4,6 +4,8 @@
  * Provides 3 top individual AI options + Option 4 (Wafir AI Combined Master Answer/Artifact).
  */
 
+import { synthesizeAnswers } from './answerEngine.js';
+
 export async function generateMultiAiResponses(prompt, mode = 'chat', extraParams = {}) {
   const p = prompt.toLowerCase();
 
@@ -27,33 +29,7 @@ export async function generateMultiAiResponses(prompt, mode = 'chat', extraParam
 }
 
 function generateChatMode(prompt) {
-  const chatgpt = `### 🤖 ChatGPT (OpenAI)
-Structured response for **"${prompt}"**:
-1. **Core Concept**: Clear breakdown of the query.
-2. **Key Insights**: Step-by-step logic and best practices.
-3. **Actionable Summary**: Straightforward guidance and implementation steps.`;
-
-  const claude = `### 🎭 Claude (Anthropic)
-In-depth perspective on **"${prompt}"**:
-* **Detailed Nuance**: Comprehensive theoretical and practical context.
-* **Refined Design**: Focus on safety, clarity, and structural balance.`;
-
-  const perplexity = `### 🔍 Perplexity & Gemini Search
-Fact-checked findings regarding **"${prompt}"**:
-- **Verified Fact 1**: Key trend & real-time context.
-- **Verified Fact 2**: Standardized benchmark and reference points.`;
-
-  const combined = `## ⚡ Wafir AI Master Combined Answer
-
-> Synthesized across **ChatGPT, Gemini, Grok, Claude & Perplexity**.
-
-### 🌟 Unified Solution for "${prompt}"
-- **Structure & Logic**: Clear step-by-step guidance.
-- **Deep Nuance**: Contextual completeness and safety.
-- **Verified Data**: Updated real-time references.
-
-*All 5 frontier models combined into one optimal output.*`;
-
+  const { chatgpt, claude, perplexity, combined } = synthesizeAnswers(prompt);
   return buildResponseObject(prompt, 'chat', chatgpt, claude, perplexity, combined);
 }
 
@@ -82,22 +58,11 @@ function generateImageMode(prompt) {
 }
 
 function generateResearchMode(prompt) {
-  const opt1 = `### 🤖 ChatGPT Deep Research\nStructured literature breakdown for **"${prompt}"** with 8 citations and categorical analysis.`;
-  const opt2 = `### 🎭 Claude Analytical Report\nComprehensive synthesis of methodology, edge cases, and risk analysis for **"${prompt}"**.`;
-  const opt3 = `### 🔍 Perplexity Real-Time Academic Index\nLive search matrix with 12 indexed sources, statistics, and domain trends for **"${prompt}"**.`;
-  const opt4 = `## ⚡ Wafir AI Master Research Report: "${prompt}"
-
-### 📊 Executive Synthesis
-Synthesized research combining **Perplexity Academic Index**, **ChatGPT**, and **Claude**:
-
-1. **Key Findings**:
-   - Comprehensive cross-verification across 15+ sources.
-   - Zero-hallucination factual grounding.
-2. **Methodological Matrix**:
-   - High precision metrics and real-time market data.
-3. **Strategic Recommendations**:
-   - Actionable implementation roadmap tailored to "${prompt}".`;
-
+  const { chatgpt, claude, perplexity, combined } = synthesizeAnswers(prompt);
+  const opt1 = `### 🤖 ChatGPT Deep Research\n\n${chatgpt}`;
+  const opt2 = `### 🎭 Claude Analytical Report\n\n${claude}`;
+  const opt3 = `### 🔍 Perplexity Real-Time Academic Index\n\n${perplexity}`;
+  const opt4 = `## ⚡ Wafir AI Master Research Report\n\n${combined}`;
   return buildResponseObject(prompt, 'research', opt1, opt2, opt3, opt4);
 }
 
