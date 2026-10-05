@@ -8,7 +8,7 @@ import { synthesizeAnswers } from './answerEngine.js';
 import { fetchLiveAnswers } from './liveAnswers.js';
 
 /**
- * Try the live keyless AI service first; fall back to the offline answer engine
+ * Try live Hugging Face inference first; fall back to the offline answer engine
  * when it is unavailable so the app always responds.
  */
 async function liveOrFallback(prompt) {

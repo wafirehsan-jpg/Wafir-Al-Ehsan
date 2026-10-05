@@ -2,5 +2,11 @@
   "previewPort": 3000,
   "healthPath": "/",
   "startCommand": "docker compose -f docker-compose.base44.yml up -d",
-  "secrets": []
+  "secrets": [
+    {
+      "name": "HUGGINGFACE_API_KEY",
+      "description": "Hugging Face access token (free tier) used for live AI answers. Create one at https://huggingface.co/settings/tokens with 'Make calls to Inference Providers' enabled. Without it the app still works, falling back to the offline answer engine.",
+      "requiredAtBoot": false
+    }
+  ]
 }

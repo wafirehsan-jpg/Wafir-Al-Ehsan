@@ -1,10 +1,10 @@
 /**
- * Live multi-voice answers via the keyless AI service.
- * One request per user prompt (keeps us under the free tier's rate limit)
- * returns all four option answers, each written in that model's voice.
+ * Live multi-voice answers via Hugging Face inference.
+ * One request per user prompt returns all four option answers, each written in
+ * that model's voice.
  */
 
-import { askRaw } from './pollinationsClient.js';
+import { askRaw } from './huggingfaceClient.js';
 
 const SYSTEM_PROMPT = `You are Wafir AI, an assistant that answers a user's question in four distinct expert voices.
 Return ONLY the following markers, each on its own line, with that voice's answer beneath it. Do not add any other text or commentary.
