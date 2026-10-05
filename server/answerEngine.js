@@ -21,6 +21,8 @@ const QUESTION_PREFIXES = [
   /^define\s+/i,
   /^(give|show) me\s+/i,
   /^help me\s+/i,
+  /^list\s+/i,
+  /^should i\s+/i,
 ];
 
 const INTENT_PATTERNS = [
@@ -33,78 +35,78 @@ const INTENT_PATTERNS = [
 ];
 
 const ANGLES = {
-  definition: (s) => [
-    `At its core, **${s}** is best defined by the problem it solves and the role it plays in practice.`,
-    `The traits that matter most for **${s}** are its purpose, how it is typically applied, and the trade-offs it carries.`,
-    `A common misconception is treating **${s}** as fixed — in reality it shifts with context and goals.`,
-    `To judge **${s}** well, weigh accuracy, effort, and how easily it fits what you already have.`,
+  definition: () => [
+    `Start with what it's actually used for — that clears up most of the confusion.`,
+    `The parts that matter most are how it works, where it's applied, and what it doesn't cover.`,
+    `It's easy to treat this as one fixed thing, but in practice it depends on the context.`,
+    `When you're weighing it up, focus on accuracy, effort, and how well it fits what you already have.`,
   ],
-  howto: (s) => [
-    `Start by defining exactly what "done" looks like for **${s}**, so you can measure progress.`,
-    `Break **${s}** into small, ordered steps and handle one at a time instead of all at once.`,
-    `Check your work early — mistakes on **${s}** are far cheaper to fix before you go further.`,
-    `Review and refine at the end; the first pass at **${s}** is rarely the best one.`,
+  howto: () => [
+    `Start by writing down what "done" looks like — it makes the rest far easier.`,
+    `Break it into small steps and take them one at a time rather than all at once.`,
+    `Check your work as you go; mistakes are much cheaper to fix early.`,
+    `Give it a final pass at the end — the first attempt is rarely the best one.`,
   ],
-  why: (s) => [
-    `The main reason behind **${s}** is the balance it strikes between benefit and cost.`,
-    `Secondary factors around **${s}** include context, timing, and the constraints you are working within.`,
-    `Ignoring **${s}** usually shows up later as rework, confusion, or wasted effort.`,
-    `Understanding **${s}** lets you make a decision you can actually defend.`,
+  why: () => [
+    `Most of the time it comes down to a trade-off between benefit and cost.`,
+    `Context, timing, and the constraints you're working within all play a part.`,
+    `Skip it and the cost usually shows up later as rework or wasted effort.`,
+    `Understanding it properly lets you make a decision you can actually defend.`,
   ],
-  comparison: (s) => [
-    `The clearest difference in **${s}** comes down to purpose, cost, and how much control you need.`,
-    `For **${s}**, one option usually wins on simplicity while the other wins on flexibility.`,
-    `Choose based on your real constraints — time, budget, team — rather than on hype.`,
-    `Often the best answer to **${s}** is to start simple and switch only when it starts to hurt.`,
+  comparison: () => [
+    `The real difference usually comes down to purpose, cost, and how much control you need.`,
+    `One option tends to win on simplicity while the other wins on flexibility.`,
+    `Choose based on your actual constraints — time, budget, team — rather than on hype.`,
+    `Often the best move is to start simple and switch only when it starts to hurt.`,
   ],
-  list: (s) => [
-    `For **${s}**, start with the single highest-impact item before adding more.`,
-    `Balance quick wins with one or two deeper ideas so **${s}** stays practical.`,
-    `Group related items together — it makes **${s}** easier to act on.`,
-    `Drop anything that does not directly move **${s}** forward.`,
+  list: () => [
+    `Start with the single highest-impact item before adding more.`,
+    `Mix quick wins with one or two deeper ideas so it stays practical.`,
+    `Group related items together — it makes them easier to act on.`,
+    `Drop anything that doesn't directly move you forward.`,
   ],
-  advice: (s) => [
-    `On **${s}**, the safer default is the simplest option that still meets your needs.`,
-    `Consider the downside first: if the worst case for **${s}** is acceptable, go ahead.`,
-    `Gather one or two real examples before committing to **${s}**.`,
-    `Revisit **${s}** after a short trial — real feedback beats theory.`,
+  advice: () => [
+    `The safer default is the simplest option that still meets your needs.`,
+    `Think about the downside first: if the worst case is acceptable, go ahead.`,
+    `Look at one or two real examples before committing.`,
+    `Revisit it after a short trial — real feedback beats theory.`,
   ],
-  general: (s) => [
-    `The heart of your question about **${s}** is a trade-off between value and effort.`,
-    `A useful way to think about **${s}** is to separate what is essential from what is optional.`,
-    `In practice, **${s}** works best when kept simple and iterated on.`,
-    `The right answer for **${s}** depends on your specific context and goals.`,
+  general: () => [
+    `At the heart of it is a trade-off between value and effort.`,
+    `It helps to separate what's essential from what's optional.`,
+    `In practice, it works best when kept simple and improved over time.`,
+    `The right answer depends on your specific context and goals.`,
   ],
 };
 
 const DIRECT = {
-  definition: (s) => `**${cap(s)}** is best understood by its purpose and how it is used — not just by its name.`,
-  howto: (s) => `To handle **${s}**, work through it in clear steps and verify each one as you go.`,
-  why: (s) => `**${cap(s)}** generally comes down to the trade-off between benefit and cost.`,
-  comparison: (s) => `Between the options in **${s}**, the right pick depends on your priorities — simplicity versus flexibility.`,
-  list: (s) => `Here are the most useful angles on **${s}**.`,
-  advice: (s) => `For **${s}**, start with the simplest approach that fits your needs, then adjust.`,
-  general: (s) => `Here's a direct take on **${s}**.`,
+  definition: (s) => `here's a clear way to think about "${s}".`,
+  howto: (s) => `here's how I'd approach "${s}".`,
+  why: (s) => `here's what's usually behind "${s}".`,
+  comparison: (s) => `here's how to choose between the options in "${s}".`,
+  list: (s) => `here are a few angles on "${s}" worth considering.`,
+  advice: (s) => `here's my honest take on "${s}".`,
+  general: (s) => `here's a straightforward take on "${s}".`,
 };
 
 const CLAUDE_OPEN = {
-  definition: (s) => `That's a good question, and **${s}** is more layered than it first appears. Rather than a single definition, it helps to look at what it's for, how it's used, and where it breaks down.`,
-  howto: (s) => `Approaching **${s}** well is less about one magic method and more about a sensible sequence you can repeat and refine.`,
-  why: (s) => `The "why" behind **${s}** usually isn't a single cause — it's a mix of incentives, constraints, and context that reinforce each other.`,
-  comparison: (s) => `Comparing the options in **${s}** is really about matching trade-offs to your situation, not crowning a universal winner.`,
-  list: (s) => `Here's a considered set of angles on **${s}**, ordered roughly by impact.`,
-  advice: (s) => `On **${s}**, the honest answer is "it depends" — so let's make the dependencies explicit.`,
-  general: (s) => `Let's take **${s}** seriously and look at it from a few angles before landing on an answer.`,
+  definition: (s) => `Good question — "${s}" is more nuanced than it first appears. It helps to look at what it's for, how it's used, and where it falls short.`,
+  howto: (s) => `Getting "${s}" right is less about one magic method and more about a sequence you can repeat and refine.`,
+  why: (s) => `The "why" behind "${s}" is rarely a single cause — it's usually a mix of incentives, constraints, and context that reinforce each other.`,
+  comparison: (s) => `Comparing the options in "${s}" is really about matching trade-offs to your situation, not crowning a universal winner.`,
+  list: (s) => `Here are a few angles on "${s}", roughly in order of impact.`,
+  advice: (s) => `On "${s}", the honest answer is "it depends" — so let's make the dependencies explicit.`,
+  general: (s) => `Let's take "${s}" seriously and look at it from a couple of angles before landing on an answer.`,
 };
 
 const CLOSERS = {
-  definition: (s) => `If you share the context you'll use **${s}** in, I can go deeper on the specifics.`,
-  howto: (s) => `Follow those steps for **${s}** and adjust as you learn what works.`,
-  why: (s) => `So the short version on **${s}**: it comes down to benefit versus cost.`,
-  comparison: (s) => `If you share your constraints, I can point to the better fit for **${s}**.`,
-  list: (s) => `Pick the two or three that fit you best and start there for **${s}**.`,
-  advice: (s) => `Try the simplest path first on **${s}**, then refine based on results.`,
-  general: (s) => `Want me to go deeper on any part of **${s}**? Just say which.`,
+  definition: () => `Tell me how you'll use it and I can get more specific.`,
+  howto: () => `Follow those steps and adjust as you learn what works.`,
+  why: () => `So the short version: it comes down to benefit versus cost.`,
+  comparison: () => `Share your priorities and I can point you to the better fit.`,
+  list: () => `Pick the two or three that suit you best and start there.`,
+  advice: () => `Try the simplest path first, then refine based on results.`,
+  general: () => `Want me to go deeper on any part? Just say which.`,
 };
 
 function cap(text) {
@@ -134,12 +136,11 @@ function extractSubject(prompt) {
       break;
     }
   }
-  s = s.replace(/^(a|an|the)\s+/i, '').trim();
   return s || prompt.trim();
 }
 
 function pickPoints(builder, count, seed) {
-  const all = builder;
+  const all = builder();
   const out = [];
   for (let i = 0; i < count; i++) {
     out.push(all[(seed + i) % all.length]);
@@ -159,9 +160,9 @@ function analyze(prompt) {
 }
 
 function chatgptAnswer(a) {
-  const points = pickPoints(ANGLES[a.intent](a.subject), 3, a.seed);
+  const points = pickPoints(ANGLES[a.intent], 3, a.seed);
   return [
-    `**Short answer:** ${DIRECT[a.intent](a.subject)}`,
+    `**Short answer:** ${cap(DIRECT[a.intent](a.subject))}`,
     ``,
     `**Here's the breakdown**`,
     ...points.map((p, i) => `${i + 1}. ${p}`),
@@ -171,7 +172,7 @@ function chatgptAnswer(a) {
 }
 
 function claudeAnswer(a) {
-  const points = pickPoints(ANGLES[a.intent](a.subject), 3, a.seed + 7);
+  const points = pickPoints(ANGLES[a.intent], 3, a.seed + 7);
   return [
     CLAUDE_OPEN[a.intent](a.subject),
     ``,
@@ -183,35 +184,35 @@ function claudeAnswer(a) {
 }
 
 function perplexityAnswer(a) {
-  const points = pickPoints(ANGLES[a.intent](a.subject), 3, a.seed + 13);
+  const points = pickPoints(ANGLES[a.intent], 3, a.seed + 13);
   return [
-    `**Answer:** ${DIRECT[a.intent](a.subject)}`,
+    `**Answer:** ${cap(DIRECT[a.intent](a.subject))}`,
     ``,
     `**Key findings**`,
     ...points.map((p) => `- ${p}`),
     ``,
     `**Sources**`,
-    `1. Consensus overview on ${a.subject}`,
+    `1. General reference material and overviews`,
     `2. Practitioner discussions and guides`,
-    `3. Recent reporting and reference material`,
+    `3. Recent reporting on the topic`,
   ].join('\n');
 }
 
 function masterAnswer(a) {
-  const points = pickPoints(ANGLES[a.intent](a.subject), 4, a.seed + 3);
+  const points = pickPoints(ANGLES[a.intent], 4, a.seed + 3);
   return [
     `## ⚡ Wafir AI Master Combined Answer`,
     ``,
     `> Synthesized across **ChatGPT, Claude, Perplexity & Gemini**.`,
     ``,
-    `**Direct answer:** ${DIRECT[a.intent](a.subject)}`,
+    `**Direct answer:** ${cap(DIRECT[a.intent](a.subject))}`,
     ``,
     `**Best of all models**`,
     ...points.map((p) => `- ${p}`),
     ``,
     `**Suggested next steps**`,
-    `- Apply the simplest option first and measure the result.`,
-    `- Revisit ${a.subject} once you have real feedback.`,
+    `- Start with the simplest option and see how it goes.`,
+    `- Come back to it once you have some real feedback.`,
   ].join('\n');
 }
 
