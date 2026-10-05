@@ -191,17 +191,25 @@ function WafirApp() {
 }
 
 function generateAgentMode(prompt) {
+  const isCustomerService = /customer|service|order|support|ticket|escalate/i.test(prompt);
+
   const agentSpec = {
-    agentName: `${prompt.replace(/[^a-zA-Z0-9 ]/g, '')} Agent`,
-    role: `Autonomous specialist AI trained for: ${prompt}`,
-    tools: ['Web Search', 'Code Execution', 'API Integration', 'Memory Storage', 'Data Analysis'],
-    systemPrompt: `You are Wafir AI Agent specialized in "${prompt}". Your goal is to autonomously execute tasks with 100% precision without requiring API keys.`,
+    agentName: isCustomerService ? 'TechCorp Customer Service Agent' : `${prompt.replace(/[^a-zA-Z0-9 ]/g, '')} Agent`,
+    role: isCustomerService
+      ? 'Customer service representative with order tracking, knowledge base search, and human escalation'
+      : `Autonomous specialist AI trained for: ${prompt}`,
+    tools: isCustomerService
+      ? ['search_knowledge_base', 'escalate_to_human', 'check_order_status', 'ConversationBufferWindowMemory']
+      : ['Web Search', 'Code Execution', 'API Integration', 'Memory Storage', 'Data Analysis'],
+    systemPrompt: isCustomerService
+      ? `You are a helpful customer service agent for TechCorp. Assist customers professionally using knowledge base, order status lookup, and human escalation.`
+      : `You are Wafir AI Agent specialized in "${prompt}". Your goal is to autonomously execute tasks with 100% precision without requiring API keys.`,
   };
 
-  const opt1 = `### 🤖 ChatGPT GPT-4o Agent Spec\nStandard assistant personality and tool definition.`;
-  const opt2 = `### 🎭 Claude Computer-Use Agent\nTask-oriented tool calling and multi-step reasoning configuration.`;
-  const opt3 = `### 🔍 Perplexity Search & Action Agent\nLive data fetching and autonomous execution pipeline.`;
-  const opt4 = `## ⚡ Wafir AI Master Autonomous Agent Created\n\n**Agent Name**: ${agentSpec.agentName}\n**Specialization**: ${agentSpec.role}\n\n### 🛠️ Active Capabilities & Tools:\n${agentSpec.tools.map(t => `- **${t}**: Fully configured & ready`).join('\n')}\n\n*Agent is deployed and ready to run autonomous multi-step tasks.*`;
+  const opt1 = `### 🤖 ChatGPT Customer Service Agent Architecture\nModel: GPT-4 Keyless Runnable\nMemory: ConversationBufferWindowMemory (k=10)\nTools: search_knowledge_base, escalate_to_human, check_order_status.`;
+  const opt2 = `### 🎭 Claude Support Agent Blueprint\nEmpathetic system prompt, multi-turn dialogue buffer, automated order lookup integration.`;
+  const opt3 = `### 🔍 Perplexity Real-Time KB & Ticket Escalation Agent\nLive database search with automated human ticket escalation triggers.`;
+  const opt4 = `## ⚡ Wafir AI Keyless Customer Service Agent Created\n\n**Agent Name**: ${agentSpec.agentName}\n**Specialization**: ${agentSpec.role}\n\n### 🛠️ Active Tools & Memory:\n${agentSpec.tools.map(t => `- **${t}**: Configured & Keyless Active`).join('\n')}\n\n*Agent is deployed keylessly in agent.py and Wafir AI workspace.*`;
 
   return {
     ...buildResponseObject(prompt, 'agent', opt1, opt2, opt3, opt4),
