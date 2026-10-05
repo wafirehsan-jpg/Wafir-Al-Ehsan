@@ -5,6 +5,21 @@
  */
 
 import { synthesizeAnswers } from './answerEngine.js';
+import { fetchLiveAnswers } from './liveAnswers.js';
+
+/**
+ * Try the live keyless AI service first; fall back to the offline answer engine
+ * when it is unavailable so the app always responds.
+ */
+async function liveOrFallback(prompt) {
+  const fallback = synthesizeAnswers(prompt);
+  try {
+    return await fetchLiveAnswers(prompt);
+  } catch (error) {
+    console.error('Live AI service unavailable, using offline answers:', error.message);
+    return fallback;
+  }
+}
 
 export async function generateMultiAiResponses(prompt, mode = 'chat', extraParams = {}) {
   const p = prompt.toLowerCase();
@@ -28,8 +43,8 @@ export async function generateMultiAiResponses(prompt, mode = 'chat', extraParam
   }
 }
 
-function generateChatMode(prompt) {
-  const { chatgpt, claude, perplexity, combined } = synthesizeAnswers(prompt);
+async function generateChatMode(prompt) {
+  const { chatgpt, claude, perplexity, combined } = await liveOrFallback(prompt);
   return buildResponseObject(prompt, 'chat', chatgpt, claude, perplexity, combined);
 }
 
@@ -57,8 +72,8 @@ function generateImageMode(prompt) {
   };
 }
 
-function generateResearchMode(prompt) {
-  const { chatgpt, claude, perplexity, combined } = synthesizeAnswers(prompt);
+async function generateResearchMode(prompt) {
+  const { chatgpt, claude, perplexity, combined } = await liveOrFallback(prompt);
   const opt1 = `### 🤖 ChatGPT Deep Research\n\n${chatgpt}`;
   const opt2 = `### 🎭 Claude Analytical Report\n\n${claude}`;
   const opt3 = `### 🔍 Perplexity Real-Time Academic Index\n\n${perplexity}`;

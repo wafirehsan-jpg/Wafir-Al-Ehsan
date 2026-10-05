@@ -1,7 +1,13 @@
 # Wafir AI — Base44 Dev Environment
 
 ## Overview
-Vite + React 19 frontend with an Express backend. The backend (`server/aiService.js`) generates **mock** AI responses — no external API keys or credentials are needed.
+Vite + React 19 frontend with an Express backend. The backend answers chat/research prompts using a **keyless** live AI service (free Pollinations endpoint, no API key), with an offline answer engine as a fallback when that service is unavailable.
+
+## Live AI (keyless)
+- `server/pollinationsClient.js` — POSTs to `https://text.pollinations.ai/openai` (OpenAI-compatible, no auth). One request per prompt.
+- `server/liveAnswers.js` — asks the model for all four option answers in one call, parsed by `<<<CHATGPT>>>`/`<<<CLAUDE>>>`/`<<<PERPLEXITY>>>`/`<<<COMBINED>>>` markers.
+- `server/answerEngine.js` — offline fallback used if the live service errors or is rate-limited.
+- The free tier is rate-limited: keep requests per prompt to one (the app does) and expect occasional fallback to the offline engine.
 
 ## Architecture
 - **Frontend**: Vite dev server on port 3000, proxies `/api` to the backend via `VITE_PROXY_TARGET` env var.
