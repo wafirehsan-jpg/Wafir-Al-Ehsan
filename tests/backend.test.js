@@ -35,4 +35,41 @@ describe('Wafir AI Multimodal Backend Suite', () => {
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty('artifactType', 'react');
   });
+
+  describe('EduVerse AI Platform API Endpoints', () => {
+    it('should retrieve demo account role info', async () => {
+      const res = await request(app).get('/api/eduverse/auth/current?role=teacher');
+      expect(res.status).toBe(200);
+      expect(res.body.account.name).toBe('Dr. Sarah Al-Maktoum');
+      expect(res.body.allRoles).toContain('student');
+    });
+
+    it('should search OER library textbooks', async () => {
+      const res = await request(app).get('/api/eduverse/library/search?query=fractions');
+      expect(res.status).toBe(200);
+      expect(res.body.results.length).toBeGreaterThan(0);
+      expect(res.body.results[0].title).toContain('Mathematics');
+    });
+
+    it('should create and evaluate a custom AI agent in Agent Studio', async () => {
+      const createRes = await request(app)
+        .post('/api/eduverse/agents/create')
+        .send({ name: 'Science Explorer Agent', supportedSubject: 'Science' });
+
+      expect(createRes.status).toBe(201);
+      const agentId = createRes.body.agent.id;
+
+      const evalRes = await request(app).post(`/api/eduverse/agents/${agentId}/evaluate`);
+      expect(evalRes.status).toBe(200);
+      expect(evalRes.body.agent.published).toBe(true);
+      expect(evalRes.body.agent.evalReport.subjectAccuracy).toContain('Passed');
+    });
+
+    it('should execute the 1-click Competition Demo Scenario and calculate score improvement', async () => {
+      const res = await request(app).post('/api/eduverse/nova/demo-scenario');
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.latestRecord.percentagePointImprovement).toBe(40);
+    });
+  });
 });
