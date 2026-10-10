@@ -24,17 +24,16 @@ import {
   FileText,
   Search,
   Palette,
-  Sun,
-  Moon,
-  Check
+  Check,
+  Crown
 } from 'lucide-react';
 
 const THEME_PRESETS = [
-  { id: 'indigo', label: 'Midnight Indigo', primary: '#6366f1', gradient: 'from-indigo-500 via-violet-500 to-sky-400', badgeClass: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
-  { id: 'cyber', label: 'Cyber Teal', primary: '#14b8a6', gradient: 'from-teal-400 via-cyan-500 to-emerald-400', badgeClass: 'bg-teal-500/20 text-teal-300 border-teal-500/30' },
-  { id: 'purple', label: 'Electric Purple', primary: '#a855f7', gradient: 'from-purple-500 via-fuchsia-500 to-pink-500', badgeClass: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
-  { id: 'amber', label: 'Royal Amber', primary: '#f59e0b', gradient: 'from-amber-500 via-orange-500 to-yellow-400', badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
-  { id: 'crimson', label: 'Crimson Velvet', primary: '#f43f5e', gradient: 'from-rose-500 via-red-500 to-pink-600', badgeClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30' }
+  { id: 'gold', label: 'Royal Gold & White', primary: '#f59e0b', gradient: 'from-amber-300 via-amber-400 to-yellow-200 text-slate-950', badgeClass: 'bg-amber-400/20 text-amber-300 border-amber-400/40' },
+  { id: 'indigo', label: 'Midnight Indigo', primary: '#6366f1', gradient: 'from-indigo-500 via-violet-500 to-sky-400 text-white', badgeClass: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+  { id: 'cyber', label: 'Cyber Teal', primary: '#14b8a6', gradient: 'from-teal-400 via-cyan-500 to-emerald-400 text-slate-950', badgeClass: 'bg-teal-500/20 text-teal-300 border-teal-500/30' },
+  { id: 'purple', label: 'Electric Purple', primary: '#a855f7', gradient: 'from-purple-500 via-fuchsia-500 to-pink-500 text-white', badgeClass: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
+  { id: 'crimson', label: 'Crimson Velvet', primary: '#f43f5e', gradient: 'from-rose-500 via-red-500 to-pink-600 text-white', badgeClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30' }
 ];
 
 export default function App() {
@@ -53,11 +52,10 @@ export default function App() {
   });
   const [activeTab, setActiveTab] = useState('nova_guardian');
 
-  // Theme customization state
+  // Theme customization state: Default to 'gold'
   const [selectedTheme, setSelectedTheme] = useState(() => {
-    return localStorage.getItem('eduverse_theme') || 'indigo';
+    return localStorage.getItem('eduverse_theme') || 'gold';
   });
-  const [customPrimaryColor, setCustomPrimaryColor] = useState('#6366f1');
   const [showThemeMenu, setShowThemeMenu] = useState(false);
 
   // Nova Chat State
@@ -241,16 +239,16 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
   const activeThemePreset = THEME_PRESETS.find(t => t.id === selectedTheme) || THEME_PRESETS[0];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-400/30 selection:text-amber-200">
 
       {/* Top Demo Bar / Role Switcher Header */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+      <div className="bg-slate-900 border-b border-amber-500/20 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-2">
-          <span className={`px-2 py-0.5 rounded font-bold border ${activeThemePreset.badgeClass}`}>
-            EDUVERSE AI DEMO
+          <span className={`px-2.5 py-0.5 rounded-full font-bold border flex items-center gap-1 ${activeThemePreset.badgeClass}`}>
+            <Crown className="w-3 h-3 text-amber-300" /> EDUVERSE GOLD EDITION
           </span>
           <span className="text-slate-300 hidden md:inline">
-            Logged in as: <strong className="text-white">{currentAccount?.name}</strong> ({currentAccount?.role?.toUpperCase()})
+            Logged in as: <strong className="text-amber-200">{currentAccount?.name}</strong> ({currentAccount?.role?.toUpperCase()})
           </span>
         </div>
 
@@ -260,16 +258,16 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
           <div className="relative">
             <button
               onClick={() => setShowThemeMenu(!showThemeMenu)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all cursor-pointer font-semibold"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all cursor-pointer font-bold shadow-sm"
             >
-              <Palette className="w-3.5 h-3.5" />
+              <Palette className="w-3.5 h-3.5 text-amber-400" />
               <span>Theme: {activeThemePreset.label}</span>
             </button>
 
             {/* Theme Selector Dropdown */}
             {showThemeMenu && (
-              <div className="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl p-2.5 shadow-2xl z-50 space-y-1">
-                <p className="text-[11px] font-bold text-slate-400 px-2 py-1 uppercase tracking-wider">Choose Theme Preset:</p>
+              <div className="absolute right-0 mt-2 w-56 bg-slate-900 border border-amber-500/30 rounded-xl p-2.5 shadow-2xl z-50 space-y-1">
+                <p className="text-[11px] font-bold text-amber-400/80 px-2 py-1 uppercase tracking-wider">Select Theme Style:</p>
                 {THEME_PRESETS.map(theme => (
                   <button
                     key={theme.id}
@@ -278,21 +276,21 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                       setShowThemeMenu(false);
                     }}
                     className={`w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between text-xs cursor-pointer ${
-                      selectedTheme === theme.id ? 'bg-slate-800 font-bold text-white' : 'hover:bg-slate-800/60 text-slate-300'
+                      selectedTheme === theme.id ? 'bg-amber-500/20 font-bold text-amber-200 border border-amber-500/30' : 'hover:bg-slate-800/60 text-slate-300'
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: theme.primary }} />
                       <span>{theme.label}</span>
                     </div>
-                    {selectedTheme === theme.id && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                    {selectedTheme === theme.id && <Check className="w-3.5 h-3.5 text-amber-400" />}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          <span className="text-slate-500">|</span>
+          <span className="text-slate-600">|</span>
 
           {/* Role Switcher Buttons */}
           <span className="text-slate-400 font-medium mr-1 hidden sm:inline">Role:</span>
@@ -302,7 +300,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
               onClick={() => setActiveRole(role)}
               className={`px-2.5 py-1 rounded-lg capitalize transition-all cursor-pointer font-bold ${
                 activeRole === role
-                  ? 'bg-gradient-to-r ' + activeThemePreset.gradient + ' text-white shadow-md'
+                  ? 'bg-gradient-to-r ' + activeThemePreset.gradient + ' font-bold shadow-md shadow-amber-500/20'
                   : 'bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700'
               }`}
             >
@@ -313,21 +311,21 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
       </div>
 
       {/* Main EduVerse Brand Header */}
-      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 md:px-8 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-amber-500/20 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xl">
         <div className="flex items-center space-x-3">
-          <div className={`w-10 h-10 rounded-2xl bg-gradient-to-tr ${activeThemePreset.gradient} p-[1.5px] shadow-lg`}>
+          <div className={`w-10 h-10 rounded-2xl bg-gradient-to-tr ${activeThemePreset.gradient} p-[1.5px] shadow-lg shadow-amber-500/20`}>
             <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+              <Crown className="w-5 h-5 text-amber-400" />
             </div>
           </div>
           <div>
-            <h1 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
               EduVerse AI
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono border ${activeThemePreset.badgeClass}`}>
-                v2.5 Global Companion
+              <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-mono border font-extrabold ${activeThemePreset.badgeClass}`}>
+                v2.5 Royal Gold Edition
               </span>
             </h1>
-            <p className="text-xs text-slate-400 hidden sm:block">
+            <p className="text-xs text-amber-200/70 hidden sm:block">
               One Student. One AI Guardian. Unlimited Possibilities.
             </p>
           </div>
@@ -337,15 +335,15 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         <button
           onClick={runDemoScenario}
           disabled={loadingDemoScenario}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r ${activeThemePreset.gradient} hover:opacity-90 text-white text-xs font-bold shadow-lg transition-all cursor-pointer`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r ${activeThemePreset.gradient} font-extrabold text-xs shadow-lg shadow-amber-500/25 hover:opacity-95 transition-all cursor-pointer`}
         >
-          <Zap className="w-4 h-4 fill-white" />
+          <Zap className="w-4 h-4 fill-slate-950" />
           <span>{loadingDemoScenario ? 'Running Workflow...' : 'Run 1-Click Judge Demo'}</span>
         </button>
       </header>
 
       {/* Navigation Tabs Bar */}
-      <nav className="bg-slate-900/60 border-b border-slate-800/80 px-4 py-2 overflow-x-auto scrollbar-none sticky top-[65px] z-30">
+      <nav className="bg-slate-900/70 border-b border-slate-800 px-4 py-2 overflow-x-auto scrollbar-none sticky top-[65px] z-30">
         <div className="max-w-7xl mx-auto flex items-center space-x-2 min-w-max">
           {[
             { id: 'nova_guardian', label: 'Nova AI Guardian', icon: Bot },
@@ -367,11 +365,11 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-gradient-to-r ' + activeThemePreset.gradient + ' text-white shadow-md ring-1 ring-white/20'
-                    : 'bg-slate-800/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800'
+                    ? 'bg-gradient-to-r ' + activeThemePreset.gradient + ' font-extrabold shadow-lg shadow-amber-500/20 ring-1 ring-amber-300/40'
+                    : 'bg-slate-800/60 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-800'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-300'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -387,22 +385,22 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
             {/* Left Context Card */}
             <div className="lg:col-span-1 space-y-4">
-              <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl">
+              <div className="bg-slate-900 border border-amber-500/20 p-5 rounded-2xl shadow-xl">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-tr ${activeThemePreset.gradient} flex items-center justify-center font-bold text-xl`}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-tr ${activeThemePreset.gradient} flex items-center justify-center font-bold text-xl shadow-md`}>
                     {currentAccount?.avatar || '👨‍🎓'}
                   </div>
                   <div>
                     <h3 className="font-extrabold text-white text-base">{currentAccount?.name}</h3>
-                    <p className="text-xs text-slate-400">{currentAccount?.grade} • {currentAccount?.curriculum}</p>
+                    <p className="text-xs text-amber-200/80">{currentAccount?.grade} • {currentAccount?.curriculum}</p>
                   </div>
                 </div>
 
                 <div className="space-y-3 pt-3 border-t border-slate-800 text-xs">
                   <div className="flex justify-between items-center">
                     <span className="text-slate-400">Current AI Guardian:</span>
-                    <span className="font-bold flex items-center gap-1 text-white">
-                      <Sparkles className="w-3.5 h-3.5" /> Nova Active
+                    <span className="font-bold flex items-center gap-1 text-amber-300">
+                      <Crown className="w-3.5 h-3.5 text-amber-400" /> Nova Active
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -417,15 +415,15 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Nova Guardian Cycle Actions</h4>
+              <div className="bg-slate-900 border border-amber-500/20 p-5 rounded-2xl shadow-xl">
+                <h4 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-3">Nova Guardian Cycle Actions</h4>
                 <div className="space-y-2">
                   <button
                     onClick={runDemoScenario}
-                    className="w-full text-left p-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 text-xs text-white font-medium flex items-center justify-between cursor-pointer"
+                    className="w-full text-left p-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-xs text-amber-200 font-semibold flex items-center justify-between cursor-pointer"
                   >
                     <span>1. Assess & Diagnose Weakness</span>
-                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                    <ChevronRight className="w-4 h-4 text-amber-400" />
                   </button>
                   <button
                     onClick={() => setNovaInput('Explain converting unlike fractions with a worked example')}
@@ -446,18 +444,18 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
             </div>
 
             {/* Right Chat Interface */}
-            <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col h-[580px] shadow-2xl">
+            <div className="lg:col-span-2 bg-slate-900 border border-amber-500/20 rounded-2xl flex flex-col h-[580px] shadow-2xl">
               <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
                 <div className="flex items-center space-x-2.5">
                   <div className={`w-8 h-8 rounded-lg bg-gradient-to-tr ${activeThemePreset.gradient} flex items-center justify-center`}>
-                    <Bot className="w-4 h-4 text-white" />
+                    <Crown className="w-4 h-4 text-slate-950" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-sm">Nova AI Guardian Interface</h3>
-                    <p className="text-[11px] text-slate-400">RAG Enabled • Verified OER Library & Agent Tools Connected</p>
+                    <h3 className="font-extrabold text-white text-sm">Nova AI Guardian Interface</h3>
+                    <p className="text-[11px] text-amber-200/70">RAG Enabled • Verified OER Library & Agent Tools Connected</p>
                   </div>
                 </div>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-500/30">
+                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">
                   Keyless & Active
                 </span>
               </div>
@@ -472,7 +470,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                     <div
                       className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed ${
                         msg.sender === 'user'
-                          ? 'bg-gradient-to-r ' + activeThemePreset.gradient + ' text-white rounded-br-none font-medium'
+                          ? 'bg-gradient-to-r ' + activeThemePreset.gradient + ' font-bold rounded-br-none shadow-md'
                           : 'bg-slate-800 border border-slate-700/80 text-slate-100 rounded-bl-none'
                       }`}
                     >
@@ -480,14 +478,14 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
 
                       {msg.citations && msg.citations.length > 0 && (
                         <div className="mt-3 pt-2 border-t border-slate-700 text-xs">
-                          <p className="text-slate-400 font-bold mb-1">📚 Referenced OER Source:</p>
+                          <p className="text-amber-300 font-bold mb-1">📚 Referenced OER Source:</p>
                           {msg.citations.map((c, i) => (
                             <a
                               key={i}
                               href={c.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-sky-400 hover:underline block"
+                              className="text-amber-400 hover:underline block font-semibold"
                             >
                               • {c.title}
                             </a>
@@ -498,7 +496,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                       {msg.suggestedAction && (
                         <button
                           onClick={runDemoScenario}
-                          className="mt-3 w-full py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                          className="mt-3 w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
                         >
                           <Zap className="w-3.5 h-3.5 fill-white" />
                           <span>{msg.suggestedAction.label}</span>
@@ -516,13 +514,13 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                   value={novaInput}
                   onChange={(e) => setNovaInput(e.target.value)}
                   placeholder="Ask Nova about math concepts, physics, coding exercises, or homework support..."
-                  className="flex-1 bg-slate-950 border border-slate-700 focus:border-slate-500 rounded-xl px-4 py-2.5 text-xs text-slate-100 outline-none"
+                  className="flex-1 bg-slate-950 border border-slate-700 focus:border-amber-500/50 rounded-xl px-4 py-2.5 text-xs text-slate-100 outline-none"
                 />
                 <button
                   type="submit"
-                  className={`bg-gradient-to-r ${activeThemePreset.gradient} text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1 cursor-pointer shadow-md`}
+                  className={`bg-gradient-to-r ${activeThemePreset.gradient} font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1 cursor-pointer shadow-md`}
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4 text-slate-950" />
                 </button>
               </form>
             </div>
@@ -532,22 +530,22 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 2: LEARNING IMPROVEMENT ANALYTICS */}
         {activeTab === 'improvement_analytics' && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div>
                   <h2 className="text-lg font-extrabold text-white flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-emerald-400" />
                     Evidence-Based Learning Improvement Dashboard
                   </h2>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-amber-200/80">
                     Real measured percentage-point score gains across baseline and follow-up assessments.
                   </p>
                 </div>
                 <button
                   onClick={runDemoScenario}
-                  className={`px-4 py-2 bg-gradient-to-r ${activeThemePreset.gradient} text-white text-xs font-bold rounded-xl flex items-center gap-2 cursor-pointer shadow-md`}
+                  className={`px-4 py-2 bg-gradient-to-r ${activeThemePreset.gradient} font-bold text-xs rounded-xl flex items-center gap-2 cursor-pointer shadow-md`}
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 text-slate-950" />
                   <span>Execute New Assessment Reassessment</span>
                 </button>
               </div>
@@ -564,7 +562,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                 </div>
                 <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
                   <span className="text-xs text-slate-400 font-medium">Top Subject Growth</span>
-                  <p className="text-2xl font-black text-white mt-1">Mathematics & STEM</p>
+                  <p className="text-2xl font-black text-amber-300 mt-1">Mathematics & STEM</p>
                 </div>
               </div>
 
@@ -587,7 +585,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                       <tr key={rec.id} className="hover:bg-slate-800/40">
                         <td className="py-3.5 px-4 font-bold text-white">{rec.studentName}</td>
                         <td className="py-3.5 px-4">
-                          <span className="font-bold text-slate-200 block">{rec.subject}</span>
+                          <span className="font-bold text-amber-200 block">{rec.subject}</span>
                           <span className="text-slate-400 text-[11px]">{rec.topic}</span>
                         </td>
                         <td className="py-3.5 px-4 font-mono text-rose-400 font-bold">{rec.baselineScore}%</td>
@@ -618,9 +616,9 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {activeTab === 'agent_studio' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Create New Agent Form */}
-            <div className="lg:col-span-1 bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl space-y-4">
+            <div className="lg:col-span-1 bg-slate-900 border border-amber-500/20 p-5 rounded-2xl shadow-xl space-y-4">
               <div className="flex items-center space-x-2 text-white">
-                <Brain className="w-5 h-5" />
+                <Brain className="w-5 h-5 text-amber-400" />
                 <h3 className="font-extrabold text-white text-base">No-Code Agent Builder</h3>
               </div>
               <p className="text-xs text-slate-400">
@@ -635,7 +633,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                     value={newAgentName}
                     onChange={(e) => setNewAgentName(e.target.value)}
                     placeholder="e.g. Physics Formula Assistant"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none focus:border-slate-500"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none focus:border-amber-500/50"
                     required
                   />
                 </div>
@@ -645,7 +643,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                   <select
                     value={newAgentSubject}
                     onChange={(e) => setNewAgentSubject(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none focus:border-slate-500"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white outline-none focus:border-amber-500/50"
                   >
                     <option value="Mathematics">Mathematics</option>
                     <option value="Science">Science & Physics</option>
@@ -656,7 +654,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
 
                 <button
                   type="submit"
-                  className={`w-full py-2.5 bg-gradient-to-r ${activeThemePreset.gradient} text-white font-bold text-xs rounded-xl transition-all cursor-pointer shadow-md`}
+                  className={`w-full py-2.5 bg-gradient-to-r ${activeThemePreset.gradient} font-bold text-xs rounded-xl transition-all cursor-pointer shadow-md`}
                 >
                   Build & Evaluate Agent
                 </button>
@@ -665,7 +663,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
 
             {/* Configured Agents List */}
             <div className="lg:col-span-2 space-y-4">
-              <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider">Active School Agents</h3>
+              <h3 className="text-sm font-bold text-amber-300 uppercase tracking-wider">Active School Agents</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {agentsList.map((agt) => (
                   <div key={agt.id} className="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
@@ -703,9 +701,9 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 4: GLOBAL CURRICULA LIBRARY */}
         {activeTab === 'library' && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl">
               <h2 className="text-lg font-extrabold text-white flex items-center gap-2 mb-2">
-                <BookOpen className="w-5 h-5 text-indigo-400" />
+                <BookOpen className="w-5 h-5 text-amber-400" />
                 Global OER Digital Textbook Library
               </h2>
               <p className="text-xs text-slate-400 mb-4">
@@ -722,7 +720,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                 />
                 <button
                   onClick={() => fetchDashboardData()}
-                  className={`bg-gradient-to-r ${activeThemePreset.gradient} text-white font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer shadow-md`}
+                  className={`bg-gradient-to-r ${activeThemePreset.gradient} font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer shadow-md`}
                 >
                   Search Library
                 </button>
@@ -754,7 +752,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                       href={bk.verifiedSourceUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-block pt-2 text-xs text-sky-400 hover:underline font-bold"
+                      className="inline-block pt-2 text-xs text-amber-300 hover:underline font-bold"
                     >
                       Open Verified OER Source →
                     </a>
@@ -768,9 +766,9 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 5: OPEN ACADEMY */}
         {activeTab === 'open_academy' && openAcademy && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl">
               <h2 className="text-lg font-extrabold text-white flex items-center gap-2 mb-2">
-                <Globe className="w-5 h-5 text-indigo-400" />
+                <Globe className="w-5 h-5 text-amber-400" />
                 EduVerse Open Academy (100% Free Learning)
               </h2>
               <p className="text-xs text-slate-400 mb-6">
@@ -779,7 +777,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
 
               {/* Foreign Languages */}
               <div className="mb-6">
-                <h3 className="text-sm font-extrabold text-slate-200 uppercase tracking-wider mb-3">
+                <h3 className="text-sm font-extrabold text-amber-200 uppercase tracking-wider mb-3">
                   🌍 Foreign Languages Coach
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -807,7 +805,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                       <p className="text-[11px] text-slate-400">{c.lessons} Interactive Lessons • {c.exercises} Practical Exercises</p>
                       <button
                         onClick={() => alert(`Launching ${c.title} Interactive Code Playground!`)}
-                        className={`px-3 py-1.5 bg-gradient-to-r ${activeThemePreset.gradient} text-white text-xs font-bold rounded-lg cursor-pointer`}
+                        className={`px-3 py-1.5 bg-gradient-to-r ${activeThemePreset.gradient} font-bold text-xs rounded-lg cursor-pointer`}
                       >
                         Open In-Browser Sandbox
                       </button>
@@ -838,9 +836,9 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 6: CLASSROOMS & GRADEBOOK */}
         {activeTab === 'classrooms' && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl">
               <h2 className="text-lg font-extrabold text-white flex items-center gap-2 mb-4">
-                <Users className="w-5 h-5 text-indigo-400" />
+                <Users className="w-5 h-5 text-amber-400" />
                 Integrated Classrooms & Academic Gradebook
               </h2>
 
@@ -871,7 +869,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 7: GLOBAL LEAGUE COMPETITIONS */}
         {activeTab === 'league' && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl">
               <h2 className="text-lg font-extrabold text-white flex items-center gap-2 mb-4">
                 <Award className="w-5 h-5 text-amber-400" />
                 EduVerse Global League Academic Competitions
@@ -908,9 +906,9 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 8: LIVE MEETINGS */}
         {activeTab === 'meetings' && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl">
               <h2 className="text-lg font-extrabold text-white flex items-center gap-2 mb-4">
-                <Video className="w-5 h-5 text-indigo-400" />
+                <Video className="w-5 h-5 text-amber-400" />
                 Unified Learning Meetings Calendar (Teams, Meet & Zoom)
               </h2>
 
@@ -936,7 +934,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                       href={m.joinUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className={`block text-center py-2 bg-gradient-to-r ${activeThemePreset.gradient} text-white font-bold text-xs rounded-xl transition-all cursor-pointer shadow-md`}
+                      className={`block text-center py-2 bg-gradient-to-r ${activeThemePreset.gradient} font-bold text-xs rounded-xl transition-all cursor-pointer shadow-md`}
                     >
                       Join {m.provider} Session
                     </a>
@@ -949,24 +947,24 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
 
         {/* TAB 9: FOCUS TIMER */}
         {activeTab === 'focus_timer' && (
-          <div className="max-w-xl mx-auto w-full bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl text-center space-y-6">
-            <div className={`inline-flex p-3 rounded-2xl bg-gradient-to-tr ${activeThemePreset.gradient} text-white`}>
-              <Clock className="w-8 h-8" />
+          <div className="max-w-xl mx-auto w-full bg-slate-900 border border-amber-500/20 p-8 rounded-3xl shadow-2xl text-center space-y-6">
+            <div className={`inline-flex p-3 rounded-2xl bg-gradient-to-tr ${activeThemePreset.gradient} font-bold`}>
+              <Clock className="w-8 h-8 text-slate-950" />
             </div>
 
             <div>
               <h2 className="text-2xl font-extrabold text-white">Focus Study Room</h2>
-              <p className="text-xs text-slate-400">Nova Pomodoro & Deep Study Session</p>
+              <p className="text-xs text-amber-200/80">Nova Pomodoro & Deep Study Session</p>
             </div>
 
-            <div className="text-6xl font-black font-mono tracking-wider text-white py-4">
+            <div className="text-6xl font-black font-mono tracking-wider text-amber-300 py-4">
               {formatTimer(timerSeconds)}
             </div>
 
             <div className="flex justify-center gap-3">
               <button
                 onClick={() => setTimerActive(!timerActive)}
-                className={`px-6 py-3 rounded-xl bg-gradient-to-r ${activeThemePreset.gradient} text-white font-bold text-sm cursor-pointer shadow-lg`}
+                className={`px-6 py-3 rounded-xl bg-gradient-to-r ${activeThemePreset.gradient} font-extrabold text-sm cursor-pointer shadow-lg`}
               >
                 {timerActive ? 'Pause Session' : 'Start Focus'}
               </button>
@@ -983,10 +981,10 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
         {/* TAB 10: PROCUREMENT & ADMIN PORTAL */}
         {activeTab === 'procurement' && procurementInfo && (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
+            <div className="bg-slate-900 border border-amber-500/20 p-6 rounded-2xl shadow-xl space-y-6">
               <div>
                 <h2 className="text-lg font-extrabold text-white flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-indigo-400" />
+                  <Shield className="w-5 h-5 text-amber-400" />
                   Institutional Procurement & School Administration Console
                 </h2>
                 <p className="text-xs text-emerald-400 font-semibold mt-1">
@@ -999,7 +997,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                 {procurementInfo.pricingTiers?.map((tier, idx) => (
                   <div key={idx} className="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-2">
                     <h3 className="font-extrabold text-white text-xs">{tier.tier}</h3>
-                    <p className="text-lg font-black text-white">{tier.annualPrice}</p>
+                    <p className="text-lg font-black text-amber-300">{tier.annualPrice}</p>
                     <p className="text-[11px] text-slate-400">AI Quota: {tier.aiAllocation}</p>
                   </div>
                 ))}
@@ -1007,7 +1005,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
 
               {/* Active Subscribed Schools */}
               <div>
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Subscribed Institutions</h3>
+                <h3 className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-3">Subscribed Institutions</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {procurementInfo.schools?.map((sch) => (
                     <div key={sch.id} className="bg-slate-950 border border-slate-800 p-4 rounded-xl space-y-1 text-xs">
@@ -1015,7 +1013,7 @@ Would you like to start a 5-minute guided step-by-step practice session and revi
                         <span>{sch.logo}</span> {sch.name}
                       </h4>
                       <p className="text-slate-400">Country: {sch.country} • Curriculum: {sch.curriculum}</p>
-                      <p className="text-slate-200 font-medium">Licensed Students: {sch.licensedStudents.toLocaleString()}</p>
+                      <p className="text-amber-200 font-medium">Licensed Students: {sch.licensedStudents.toLocaleString()}</p>
                     </div>
                   ))}
                 </div>
