@@ -1,12 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import { generateMultiAiResponses } from './aiService.js';
+import eduverseRoutes from './eduverseRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+// EduVerse AI Platform Routes
+app.use('/api/eduverse', eduverseRoutes);
 
 // API Endpoint for Wafir AI Chat and Multimodal Features
 app.post('/api/chat', async (req, res) => {
